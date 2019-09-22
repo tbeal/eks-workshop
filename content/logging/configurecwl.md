@@ -14,8 +14,6 @@ Original instructions for this are available at:
 
 http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_ES_Stream.html
 
-Create Lambda Basic Execution Role
-
 ```
 cat <<EoF > ~/environment/iam_policy/lambda.json
 {
@@ -60,7 +58,7 @@ Cloudwatch page is refreshed to show that the filter was successfully created
 
 ### Configure Kibana
 
-In Amazon Elasticsearch console, select the [Elasticsearch cluster](https://console.aws.amazon.com/es/home?#domain:resource=kubernetes-logs;action=dashboard)
+In Amazon Elasticsearch console, select the [kubernetes-logs under My domains](https://console.aws.amazon.com/es/home?#domain:resource=kubernetes-logs;action=dashboard)
 
 ![ElasticSearch Details](/images/logging_es_details.png)
 

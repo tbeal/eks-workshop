@@ -6,7 +6,7 @@ weight: 30
 
 Now we can access the Kubernetes Dashboard
 
-1. In your Cloud9 environment, click **Preview / Preview Running Application**
+1. In your Cloud9 environment, click **Tools / Preview / Preview Running Application**
 1. Scroll to **the end of the URL** and append:
 
 ```
@@ -15,10 +15,10 @@ Now we can access the Kubernetes Dashboard
 
 Open a New Terminal Tab  and enter
 ```
-aws-iam-authenticator token -i eksworkshop-eksctl --token-only
+aws eks get-token --cluster-name eksworkshop-eksctl | jq -r '.status.token'
 ```
 
-Copy the output of this command and then *click* the radio button next to
+Copy the output of this command and then click the radio button next to
 *Token* then in the text field below paste the output from the last command.
 
 ![Token page](/images/dashboard-connect.png)

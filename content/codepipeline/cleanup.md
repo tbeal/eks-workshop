@@ -23,7 +23,7 @@ Check the box next to the **eksws-codepipeline** stack, select the **Actions** d
 
 ![CloudFormation Delete](/images/codepipeline/cloudformation_delete.png)
 
-Now we are going to delete the [ECR repository](https://console.aws.amazon.com/ecs/home#/repositories):
+Now we are going to delete the [ECR repository](https://console.aws.amazon.com/ecr/home#/repositories):
 
 ![ECR Delete](/images/codepipeline/ecr_delete.png)
 
@@ -31,11 +31,3 @@ Empty and then delete the [S3 bucket](https://s3.console.aws.amazon.com/s3/home)
 select the bucket, then empty the bucket and finally delete the bucket:
 
 ![S3 Delete](/images/codepipeline/s3_delete.png)
-
-Finally, we are going to delete the IAM role created for CodeBuild to permit changes to the EKS cluster:
-
-```
-aws iam delete-role-policy --role-name EksWorkshopCodeBuildKubectlRole --policy-name eks-describe
-
-aws iam delete-role --role-name EksWorkshopCodeBuildKubectlRole
-```

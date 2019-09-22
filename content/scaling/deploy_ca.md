@@ -20,7 +20,7 @@ wget https://eksworkshop.com/scaling/deploy_ca.files/cluster_autoscaler.yml
 ```
 
 ### Configure the ASG
-We will need to provide the name of the Autoscaling Group that we want CA to manipulate. Collect the name of the Auto Scaling Group (ASG) containing your worker nodes. Record the name somewhere. We will us this later in the manifest file.
+We will need to provide the name of the Autoscaling Group that we want CA to manipulate. Collect the name of the Auto Scaling Group (ASG) containing your worker nodes. Record the name somewhere. We will use this later in the manifest file.
 
 You can find it in the console by following this [link](https://console.aws.amazon.com/ec2/autoscaling/home?#AutoScalingGroups:id=eksctl-eksworkshop-eksctl-nodegroup-0-NodeGroup-SQG8QDVSR73G;view=details;filter=eksworkshop).
 
@@ -62,12 +62,12 @@ Although Cluster Autoscaler is the de facto standard for automatic scaling in K8
 ### Create an IAM Policy
 We need to configure an inline policy and add it to the EC2 instance profile of the worker nodes
 
-Collect the Instance Profile and Role NAME from the CloudFormation Stack
+Ensure `ROLE_NAME` is set in your environment:
 ```
-INSTANCE_PROFILE_PREFIX=$(aws cloudformation describe-stacks --stack-name eksctl-eksworkshop-eksctl-nodegroup-0 | jq -r '.Stacks[].Outputs[].ExportName' | sed 's/:.*//')
-INSTANCE_PROFILE_NAME=$(aws iam list-instance-profiles | jq -r '.InstanceProfiles[].InstanceProfileName' | grep $INSTANCE_PROFILE_PREFIX)
-ROLE_NAME=$(aws iam get-instance-profile --instance-profile-name $INSTANCE_PROFILE_NAME | jq -r '.InstanceProfile.Roles[] | .RoleName')
+test -n "$ROLE_NAME" && echo ROLE_NAME is "$ROLE_NAME" || echo ROLE_NAME is not set
 ```
+If `ROLE_NAME` is not set, please review: [/eksctl/test/](/eksctl/test/)
+
 ```
 mkdir ~/environment/asg_policy
 cat <<EoF > ~/environment/asg_policy/k8s-asg-policy.json
@@ -80,7 +80,8 @@ cat <<EoF > ~/environment/asg_policy/k8s-asg-policy.json
         "autoscaling:DescribeAutoScalingGroups",
         "autoscaling:DescribeAutoScalingInstances",
         "autoscaling:SetDesiredCapacity",
-        "autoscaling:TerminateInstanceInAutoScalingGroup"
+        "autoscaling:TerminateInstanceInAutoScalingGroup",
+        "autoscaling:DescribeTags"
       ],
       "Resource": "*"
     }
